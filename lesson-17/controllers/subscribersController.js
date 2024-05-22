@@ -6,8 +6,15 @@
  * 구독자를 위한 컨트롤러 액션 정의
  */
 // 구독자 모델 요청
-const Subscriber = require("../models/subscriber");
-
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://lim021298:ERBJYBO43EvfIngF@ut-node.z7jjt1w.mongodb.net/?retryWrites=true&w=majority&appName=ut-node",
+  {}
+);
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("Connect to MONGODB!!!");
+});
 // 구독자 가져오기
 exports.getAllSubscribers = (req, res, next) => {
   Subscriber.find({})

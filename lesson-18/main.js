@@ -15,8 +15,13 @@ const express = require("express"), // express를 요청
  */
 const mongoose = require("mongoose"); // mongoose를 요청
 // 데이터베이스 연결 설정
-mongoose.connect("mongodb://127.0.0.1:27017/ut-nodejs", {
-  useNewUrlParser: true,
+mongoose.connect(
+  "mongodb+srv://lim021298:ERBJYBO43EvfIngF@ut-node.z7jjt1w.mongodb.net/?retryWrites=true&w=majority&appName=ut-node",
+  {}
+);
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("Connect to MONGODB!!!");
 });
 
 app.set("port", process.env.PORT || 3000);
@@ -56,6 +61,12 @@ app.get("/subscribers", subscribersController.getAllSubscribers); // 모든 구�
  * Listing 18.10 (p. 269)
  * userController.js를 위에서 요청
  */
+
+app.get(
+  "/users",
+ usersController.index,
+usersController.indexview
+);
 // @TODO: index 라우트 생성
 
 /**
