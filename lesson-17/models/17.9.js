@@ -6,15 +6,20 @@
  * REPL.js에서의 명령 수행
  */
 const mongoose = require("mongoose"),
-  Subscriber = require("./subscriber"),
+  Subscriber = require("./Subscriber"),
   Course = require("./Course");
 
 var testCourse, testSubscriber;
 
-mongoose.connect("mongodb://127.0.0.1:27017/ut-nodejs", {
-  useNewUrlParser: true,
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://lim021298:ERBJYBO43EvfIngF@ut-node.z7jjt1w.mongodb.net/?retryWrites=true&w=majority&appName=ut-node",
+  {}
+);
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("Connect to MONGODB!!!");
 });
-
 // mongoose.Promise = global.Promise;
 
 Subscriber.remove({}) // 모든 구독자와 강좌 정보를 삭제한다

@@ -8,11 +8,16 @@
 const mongoose = require("mongoose"), // REPL에서 Mongoose 모듈 요청
   Subscriber = require("./subscriber"); // 로컬 프로젝트 파일과 모델명을 사용해 Subscriber 모델의 변수 할당
 
-mongoose.connect("mongodb://127.0.0.1:27017/ut-nodejs", {
-  // ut-nodejs를 사용하는 데이터베이스에 커넥션 설정
-  useNewUrlParser: true,
-});
-
+  
+  
+mongoose.connect(
+    "mongodb+srv://lim021298:ERBJYBO43EvfIngF@ut-node.z7jjt1w.mongodb.net/?retryWrites=true&w=majority&appName=ut-node",
+    {}
+  );
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("Connect to MONGODB!!!");
+  });
 // mongoose.Promise = global.Promise; // Mongoose에 main.js에서 했던 것처럼 기본 프라미스의 사용 알리기
 
 /**

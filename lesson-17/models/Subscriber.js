@@ -5,9 +5,17 @@
  * Listing 17.2 (p. 242)
  * 구독자 스키마에 유효성 평가자 추가
  */
-const mongoose = require("mongoose"),
 
-  subscriberSchema = mongoose.Schema({
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://lim021298:ERBJYBO43EvfIngF@ut-node.z7jjt1w.mongodb.net/?retryWrites=true&w=majority&appName=ut-node",
+  {}
+);
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("Connect to MONGODB!!!");
+});
+const subscriberSchema = mongoose.Schema({
    
     name: {
       type : String,

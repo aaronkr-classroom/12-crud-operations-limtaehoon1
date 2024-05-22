@@ -7,6 +7,8 @@
  */
 // 구독자 모델 요청
 const mongoose = require("mongoose");
+const Subscriber = require("../models/Subscriber");
+  
 mongoose.connect(
   "mongodb+srv://lim021298:ERBJYBO43EvfIngF@ut-node.z7jjt1w.mongodb.net/?retryWrites=true&w=majority&appName=ut-node",
   {}
