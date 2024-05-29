@@ -1,6 +1,9 @@
 // models/User.js
 "use strict";
 
+const usersController = require("../../lesson-18/controllers/usersController");
+const Subscriber = require("./Subscriber");
+
 /**
  * Listing 18.1 (p. 259)
  * user.js에서 사용자 모델 생성
@@ -80,7 +83,30 @@ module.exports = mongoose.model("User", userSchema);
  * Listing 19.4 (p. 281)
  * user.js에 pre("save") 훅 추가
  */
+userSchema.pre("save", (next) => {
+
+  let user = this;
+  if (user.subscribedAccount === undefined) {
+    Subscriber.findone({
+      email: user.email
+    })
+    .then(Subscriber => {
+      user.subscribedAccount =Subscriber;
+      next();
+
+    })
+    .catch(error => {
+      console.log(`Error in connecting subcriber ${error.message}`);
+      next(error);
+    })
+  }
+  else {
+    next();
+  }
+});
 /**
+
+
  * @TODO: pre("save") 훅 설정
  */
 

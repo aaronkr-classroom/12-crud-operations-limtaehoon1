@@ -40,7 +40,39 @@ module.exports = {
   /**
    * @TODO: new, create, redirectView 액션을 객체 리터럴로 묶어 익스포트
    */
-
+  new: (req,res) => {
+    res.render("users/new")
+  },
+  create: (req,res,next) => {
+    let userParams = {
+      
+        name: {
+          first : req.body.first, 
+          last : req.body.last,
+        },
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password,
+        profileImg: req.profileImg,
+      
+    };
+    User.create(userParams)
+      .then((user) => {
+        console.log(`Created user: ${user.name}`);
+        res.locals.redirect = "/users";
+        res.locals.user =user;
+        next();
+    })
+    .catch(error => {
+      console.log(`Error Creating user: ${error.message}`);
+      next(error);
+    });
+  },
+  redirectView: (req,res,next) =>{
+    let path = res.locals.redirect;
+    if(path) res.redirect(path);
+    else next();
+  },
   /**
    * 노트: 구독자 컨트롤러에 new와 create 액션을 추가하는 것은 새로운 CRUD 액션을 맞춰
    * getAllSubscribers와 saveSubscriber 액션을 삭제할 수 있다는 의미다. 게다가 홈
@@ -51,6 +83,22 @@ module.exports = {
    * Listing 19.7 (p. 285)
    * userController.js에서 특정 사용자에 대한 show 액션 추가
    */
+  show: (req,res,next) => {
+    let userID = req.params.id;
+    User.findById(userID)
+    .then(user => {
+      res.locals.user = user;
+      next();
+    })
+    .catch(error => {
+      console.log(`Error Fetching user by ID: ${error.message}`);
+      next(error);
+    });
+  },
+
+  showView: (req,res) =>{
+    res.render("users/show")
+  }
   /**
    * @TODO: show, showView 액션을 객체 리터럴로 묶어 익스포트
    */

@@ -13,10 +13,14 @@ const express = require("express"), // express를 요청
  * Listing 16.1 (p. 228)
  * 애플리케이션에 Mongoose 설정
  */
-const mongoose = require("mongoose"); // mongoose를 요청
-// 데이터베이스 연결 설정
-mongoose.connect("mongodb://127.0.0.1:27017/ut-nodejs", {
-  useNewUrlParser: true,
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://lim021298:ERBJYBO43EvfIngF@ut-node.z7jjt1w.mongodb.net/?retryWrites=true&w=majority&appName=ut-node",
+  {}
+);
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("Connect to MONGODB!!!");
 });
 
 app.set("port", process.env.PORT || 3000);
@@ -43,23 +47,24 @@ app.use(
 );
 app.use(express.json());
 
+
+const router = express.Router();
+app.use("/",router);
+
 /**
  * Listing 19.3 (p. 280)
  * new와 create 라우트를 위한 라우터 추가
- *
- * @TODO: app.get와 app.post를 router.get과 router.post로 변경할 수 있다
- */
+**
 
-/**
  * Listing 12.6 (p. 178)
  * 각 페이지 및 요청 타입을 위한 라우트 추가
  */
-app.get("/", homeController.showHome);
-app.get("/transportation", homeController.showTransportation); // 코스 페이지 위한 라우트 추가
-app.get("/contact", subscribersController.getSubscriptionPage); // 연락처 페이지 위한 라우트 추가
-app.post("/contact", subscribersController.saveSubscriber); // 연락처 제출 양식을 위한 라우트 추가
+router.get("/", homeController.showHome);
+router.get("/transportation", homeController.showTransportation); // 코스 페이지 위한 라우트 추가
+router.get("/contact", subscribersController.getSubscriptionPage); // 연락처 페이지 위한 라우트 추가
+router.post("/contact", subscribersController.saveSubscriber); // 연락처 제출 양식을 위한 라우트 추가
 
-app.get("/subscribers", subscribersController.getAllSubscribers); // 모든 구독자를 위한 라우트 추가
+router.get("/subscribers", subscribersController.getAllSubscribers); // 모든 구독자를 위한 라우트 추가
 
 /**
  * Listing 18.10 (p. 269)
@@ -71,6 +76,20 @@ app.get("/users", usersController.index, usersController.indexView); // index �
  * Listing 19.3 (p. 280)
  * 사용자의 new와 create 라우트 추가
  */
+router.get("/users/new",usersController.new);
+router.post(
+
+  "/users/create",
+  usersController.create,
+  usersController.redirectView
+  
+);
+router.get(
+
+  "/users/:id",
+  usersController.show,
+  usersController.showView
+);
 /**
  * @TODO: new, create, redirectView 라우트를 위한 라우터 추가
  */
