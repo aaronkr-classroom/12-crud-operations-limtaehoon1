@@ -119,8 +119,8 @@ module.exports = {
     })
   },
   update: (req,res,next) => {
-
-    let userParams = {
+    let userID =req.params.id,
+     userParams = {
       name: {
         first: req.body.first,
         last: req.body.last,
